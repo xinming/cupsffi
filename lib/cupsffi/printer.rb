@@ -58,7 +58,11 @@ class CupsPrinter
 
   def state
     o = attributes
-
+    begin
+      reasons = o['printer-state-reasons'].split(/,/)
+    rescue
+      reasons = ["None"]
+    end
     {
       :state =>
         case o['printer-state']
@@ -67,7 +71,7 @@ class CupsPrinter
           when "5" then :stopped
           else :unknown
         end,
-      :reasons => o['printer-state-reasons'].split(/,/)
+      :reasons => reasons
     }
   end
 
